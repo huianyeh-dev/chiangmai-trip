@@ -12,12 +12,11 @@
     header, main { width:min(1120px,calc(100% - 28px)); margin:auto; }
     main { overflow:hidden; }
     header { padding:42px 0 20px; }
-    .hero { display:grid; grid-template-columns:1.2fr .8fr; gap:22px; align-items:end; border-bottom:1px solid var(--line); padding-bottom:24px; }
+    .hero { display:grid; grid-template-columns:1fr; gap:22px; align-items:end; border-bottom:1px solid var(--line); padding-bottom:24px; }
     .eyebrow { color:var(--moss); font-size:13px; letter-spacing:.18em; text-transform:uppercase; }
     h1 { margin:8px 0; font-size:clamp(38px,9vw,86px); line-height:.94; font-weight:500; }
     h2 { margin:0 0 14px; font-size:24px; font-weight:600; }
-    .hero p, .share { color:var(--soft); line-height:1.8; }
-    .stamp { justify-self:end; width:min(260px,100%); aspect-ratio:1; border:1px solid var(--line); border-radius:50%; display:grid; place-items:center; text-align:center; color:var(--moss); background:rgba(255,250,241,.62); font-size:18px; line-height:1.7; }
+    .share { color:var(--soft); line-height:1.8; }
     section { margin:24px 0; }
     .card { background:rgba(255,250,241,.78); border:1px solid var(--line); border-radius:8px; box-shadow:0 18px 40px rgba(78,63,47,.08); }
     .days, .notes, .summary { display:grid; gap:14px; }
@@ -39,6 +38,13 @@
     .people { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
     .chip { display:flex; align-items:center; gap:6px; padding:8px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.48); font-size:13px; }
     .chip input { width:16px; min-height:16px; accent-color:var(--moss); }
+    .split-mode { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .mode-option { display:flex; align-items:center; gap:8px; padding:9px 10px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.48); font-size:14px; }
+    .mode-option input { width:16px; min-height:16px; accent-color:var(--moss); }
+    .custom-shares { display:none; gap:8px; margin-top:8px; }
+    .custom-shares.active { display:grid; }
+    .share-row { display:grid; grid-template-columns:1fr 110px; gap:8px; align-items:center; font-size:13px; color:var(--soft); }
+    .share-row input { min-height:36px; padding:7px 9px; }
     .table-wrap { overflow-x:auto; }
     table { width:100%; min-width:560px; border-collapse:collapse; }
     th, td { padding:10px; border-bottom:1px solid var(--line); text-align:left; font-size:14px; vertical-align:top; }
@@ -55,7 +61,6 @@
     @media (max-width:760px) {
       header, main { width:calc(100% - 24px); }
       .hero,.split { grid-template-columns:1fr; }
-      .stamp { justify-self:start; width:160px; }
       .people { grid-template-columns:repeat(2,1fr); }
       .card, .day, .note, form, .ledger, .share { max-width:100%; }
       table { min-width:500px; }
@@ -73,9 +78,7 @@
       <div>
         <div class="eyebrow">Chiang Mai Retreat</div>
         <h1>清邁之旅</h1>
-        <p>2026/6/5 - 6/9｜行程、行前提醒與旅費分帳，下方可新增支出與查看每人應收應付。</p>
       </div>
-      <div class="stamp">12 Travelers<br>5 Days<br>Chiang Mai</div>
     </div>
   </header>
 
@@ -107,6 +110,12 @@
           <select id="payer"></select>
           <label>分攤對象</label>
           <div class="people" id="people"></div>
+          <label>分攤方式</label>
+          <div class="split-mode">
+            <label class="mode-option"><input type="radio" name="splitMode" value="equal" checked> 平均分攤</label>
+            <label class="mode-option"><input type="radio" name="splitMode" value="custom"> 自訂金額</label>
+          </div>
+          <div class="custom-shares" id="customShares"></div>
           <button type="submit">新增支出</button>
           <button class="secondary" type="button" id="selectAll">全選 / 取消全選</button>
           <button class="secondary" type="button" id="clearAll">清空記帳</button>
@@ -139,8 +148,8 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbze_qFWoGpE_v0neliKn03o4qsr4eoKq71mSzzZ0XXXGW0WLSAd0is3fIIJNr8Nqs30/exec";
     const API_TOKEN = "chiangmai2026";
     const days = [
-      ["6/5 Fri", "Sunmai Pool Villa", [["10:20", "BR257 / CI852 抵達"], ["12:30", "Ekachan 午餐"], ["14:00", "Check in & TG110 抵達"], ["16:00", "古城 / 草編街 / 瓦洛洛市場"], ["20:00", "長康路夜市"], ["22:00", "Bar optional"]]],
-      ["6/6 Sat", "Sunmai Pool Villa", [["08:00", "Grab 早餐"], ["12:00", "Saturday Market"], ["16:00", "Crystal bowl sound bath，2500 THB"], ["18:00", "Villa private chef BBQ，950 THB"]]],
+      ["6/5 Fri", "Sunmai Pool Villa", [["10:20", "BR257 抵達（Iris、靈毓、LuLu、偉廷、安、丹尼）／CI852 抵達（Jovi、Lin）"], ["12:30", "Ekachan 午餐"], ["14:00", "Check in & TG110 抵達（佳錚、吟禧、毅威）"], ["16:00", "古城 / 草編街 / 瓦洛洛市場"], ["20:00", "長康路夜市"], ["22:00", "Bar optional"]]],
+      ["6/6 Sat", "Sunmai Pool Villa", [["08:00", "Grab 早餐"], ["12:00", "Saturday Market"], ["16:00", "Crystal bowl sound bath，2500 THB/class"], ["18:00", "Villa private chef BBQ，950 THB/pp"]]],
       ["6/7 Sun", "Sunmai Pool Villa", [["08:00", "飯店早餐"], ["10:00", "黏黏瀑布玩水"], ["12:00", "Lunch"], ["14:00", "Temple"], ["16:00", "Spa & Massage"], ["18:00", "餐酒"]]],
       ["6/8 Mon", "寧曼路", [["08:00", "Brunch"], ["11:35", "BR258 起飛（Iris）"], ["12:00", "Check out / 新飯店放行李"], ["14:00", "Gallery Kang Wat 市集 / 手作 / 咖啡"], ["18:00", "Dinner"], ["20:00", "寧曼路夜市"]]],
       ["6/9 Tue", "返程日", [["08:00", "飯店早餐"], ["11:20", "CI852 起飛（佳錚、吟禧、偉廷、LuLu、毅威）"], ["00:05", "FD 起飛（靈毓）"]]]
@@ -149,6 +158,7 @@
     const dayRoot = document.querySelector("#days");
     const payer = document.querySelector("#payer");
     const people = document.querySelector("#people");
+    const customShares = document.querySelector("#customShares");
     const rows = document.querySelector("#expenseRows");
     const summary = document.querySelector("#summary");
     const settlements = document.querySelector("#settlements");
@@ -166,8 +176,13 @@
       payer.add(new Option(name, name));
       const label = document.createElement("label");
       label.className = "chip";
-      label.innerHTML = `<input type="checkbox" value="${name}" checked> ${name}`;
+      label.innerHTML = `<input type="checkbox" value="${name}" checked data-person="${name}"> ${name}`;
       people.appendChild(label);
+      const row = document.createElement("label");
+      row.className = "share-row";
+      row.dataset.person = name;
+      row.innerHTML = `<span>${name}</span><input type="number" min="0" step="1" placeholder="0" data-share="${name}">`;
+      customShares.appendChild(row);
     });
 
     const money = value => `${Math.round(value).toLocaleString()} THB`;
@@ -192,7 +207,8 @@
           title: item.title,
           amount: Number(item.amount || 0),
           payer: item.payer,
-          participants: Array.isArray(item.participants) ? item.participants : String(item.participants || "").split(",").filter(Boolean)
+          participants: Array.isArray(item.participants) ? item.participants : String(item.participants || "").split(",").filter(Boolean),
+          shares: item.shares ? JSON.parse(item.shares) : null
         }));
         render();
         setStatus("已同步 Google Sheets");
@@ -214,8 +230,12 @@
       const balance = Object.fromEntries(travelers.map(name => [name, 0]));
       expenses.forEach(item => {
         balance[item.payer] += Number(item.amount);
-        const share = Number(item.amount) / item.participants.length;
-        item.participants.forEach(name => balance[name] -= share);
+        if (item.shares) {
+          Object.entries(item.shares).forEach(([name, share]) => balance[name] -= Number(share || 0));
+        } else {
+          const share = Number(item.amount) / item.participants.length;
+          item.participants.forEach(name => balance[name] -= share);
+        }
       });
       summary.innerHTML = travelers.map(name => {
         const value = balance[name];
@@ -254,12 +274,25 @@
       event.preventDefault();
       const participants = [...people.querySelectorAll("input:checked")].map(input => input.value);
       if (!participants.length) return alert("請至少選一位分攤對象");
+      const splitMode = document.querySelector("input[name='splitMode']:checked").value;
+      const amount = Number(document.querySelector("#amount").value);
+      let shares = null;
+      if (splitMode === "custom") {
+        shares = {};
+        participants.forEach(name => {
+          shares[name] = Number(customShares.querySelector(`[data-share="${name}"]`).value || 0);
+        });
+        const totalShares = Object.values(shares).reduce((sum, value) => sum + value, 0);
+        if (totalShares <= 0) return alert("請填寫自訂分攤金額");
+        if (Math.round(totalShares) !== Math.round(amount)) return alert("自訂分攤金額加總需等於支出總金額");
+      }
       const item = {
         id: crypto.randomUUID(),
         title: document.querySelector("#title").value.trim(),
-        amount: Number(document.querySelector("#amount").value),
+        amount,
         payer: payer.value,
-        participants
+        participants,
+        shares
       };
       try {
         setStatus("正在新增支出...");
@@ -269,6 +302,9 @@
         setStatus("已同步 Google Sheets");
         event.currentTarget.reset();
         people.querySelectorAll("input").forEach(input => input.checked = true);
+        customShares.querySelectorAll("input").forEach(input => input.value = "");
+        document.querySelector("input[name='splitMode'][value='equal']").checked = true;
+        updateCustomShareVisibility();
       } catch (error) {
         console.error(error);
         setStatus("新增失敗，請稍後再試");
@@ -293,7 +329,20 @@
       const checks = [...people.querySelectorAll("input")];
       const shouldCheck = checks.some(input => !input.checked);
       checks.forEach(input => input.checked = shouldCheck);
+      updateCustomShareVisibility();
     });
+
+    function updateCustomShareVisibility() {
+      const isCustom = document.querySelector("input[name='splitMode']:checked").value === "custom";
+      customShares.classList.toggle("active", isCustom);
+      const selected = new Set([...people.querySelectorAll("input:checked")].map(input => input.value));
+      customShares.querySelectorAll(".share-row").forEach(row => {
+        row.style.display = selected.has(row.dataset.person) ? "grid" : "none";
+      });
+    }
+
+    document.querySelectorAll("input[name='splitMode']").forEach(input => input.addEventListener("change", updateCustomShareVisibility));
+    people.addEventListener("change", updateCustomShareVisibility);
 
     document.querySelector("#clearAll").addEventListener("click", async () => {
       if (!confirm("確定清空所有記帳資料？")) return;
@@ -314,4 +363,5 @@
   </script>
 </body>
 </html>
+
 
