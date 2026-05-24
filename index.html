@@ -5,144 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>清邁之旅｜2026</title>
   <style>
-    :root {
-      --bg: #f7f1e7;
-      --cream: #fffaf1;
-      --ink: #2f2b25;
-      --soft: #857b6d;
-      --sage: #88957b;
-      --moss: #5e7153;
-      --sand: #d7bea0;
-      --rose: #bd8c7d;
-      --line: rgba(47,43,37,.14);
-    }
+    :root { --bg:#f7f1e7; --cream:#fffaf1; --ink:#2f2b25; --soft:#857b6d; --sage:#88957b; --moss:#5e7153; --rose:#bd8c7d; --line:rgba(47,43,37,.14); }
     * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      color: var(--ink);
-      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
-      background:
-        radial-gradient(circle at 14% 12%, rgba(189,140,125,.18), transparent 28%),
-        radial-gradient(circle at 88% 0%, rgba(136,149,123,.24), transparent 25%),
-        var(--bg);
+    body { margin:0; color:var(--ink); font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif; background:radial-gradient(circle at 14% 12%,rgba(189,140,125,.18),transparent 28%),radial-gradient(circle at 88% 0%,rgba(136,149,123,.24),transparent 25%),var(--bg); }
+    body::before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.16; background-image:linear-gradient(90deg,#8f8067 1px,transparent 1px),linear-gradient(#8f8067 1px,transparent 1px); background-size:28px 28px; mask-image:linear-gradient(to bottom,#000,transparent 70%); }
+    header, main { width:min(1120px,calc(100% - 28px)); margin:auto; }
+    main { overflow:hidden; }
+    header { padding:42px 0 20px; }
+    .hero { display:grid; grid-template-columns:1.2fr .8fr; gap:22px; align-items:end; border-bottom:1px solid var(--line); padding-bottom:24px; }
+    .eyebrow { color:var(--moss); font-size:13px; letter-spacing:.18em; text-transform:uppercase; }
+    h1 { margin:8px 0; font-size:clamp(38px,9vw,86px); line-height:.94; font-weight:500; }
+    h2 { margin:0 0 14px; font-size:24px; font-weight:600; }
+    .hero p, .share { color:var(--soft); line-height:1.8; }
+    .stamp { justify-self:end; width:min(260px,100%); aspect-ratio:1; border:1px solid var(--line); border-radius:50%; display:grid; place-items:center; text-align:center; color:var(--moss); background:rgba(255,250,241,.62); font-size:18px; line-height:1.7; }
+    section { margin:24px 0; }
+    .card { background:rgba(255,250,241,.78); border:1px solid var(--line); border-radius:8px; box-shadow:0 18px 40px rgba(78,63,47,.08); }
+    .days, .notes, .summary { display:grid; gap:14px; }
+    .days { grid-template-columns:repeat(auto-fit,minmax(205px,1fr)); }
+    .day, .note, form, .ledger, .share { padding:16px; }
+    .date { color:var(--moss); font-size:21px; font-weight:700; }
+    .hotel { color:var(--soft); font-size:13px; margin:3px 0 12px; }
+    .event { display:grid; grid-template-columns:52px 1fr; gap:8px; padding:8px 0; border-top:1px solid var(--line); font-size:14px; line-height:1.45; }
+    .time { color:var(--rose); font-weight:700; }
+    .notes { grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); }
+    .note h3 { margin:0 0 8px; font-size:17px; }
+    .note p { margin:0; color:var(--soft); line-height:1.75; font-size:14px; }
+    a { color:var(--moss); font-weight:700; }
+    .split { display:grid; grid-template-columns:minmax(280px,360px) 1fr; gap:16px; align-items:start; }
+    label { display:block; margin:12px 0 6px; color:var(--soft); font-size:13px; font-weight:700; }
+    input, select, button { width:100%; min-height:42px; border:1px solid var(--line); border-radius:8px; padding:9px 11px; color:var(--ink); background:var(--cream); font:inherit; }
+    button { margin-top:12px; cursor:pointer; border:0; color:white; background:var(--moss); font-weight:700; }
+    .secondary { color:var(--moss); background:transparent; border:1px solid var(--moss); }
+    .people { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .chip { display:flex; align-items:center; gap:6px; padding:8px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.48); font-size:13px; }
+    .chip input { width:16px; min-height:16px; accent-color:var(--moss); }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; min-width:560px; border-collapse:collapse; }
+    th, td { padding:10px; border-bottom:1px solid var(--line); text-align:left; font-size:14px; vertical-align:top; }
+    th { color:var(--soft); font-weight:700; }
+    .summary { margin-top:14px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); }
+    .balance { padding:12px; border:1px solid var(--line); border-radius:8px; background:rgba(247,241,231,.68); font-size:14px; }
+    .settlements { margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+    .settlements h3 { margin:0 0 10px; font-size:17px; }
+    .settlement-list { display:grid; gap:8px; }
+    .settlement { padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.42); font-size:14px; }
+    .positive { color:#486a48; font-weight:800; }
+    .negative { color:#a35d4a; font-weight:800; }
+    #syncStatus { margin:12px 0 0; color:var(--soft); font-size:13px; line-height:1.6; }
+    @media (max-width:760px) {
+      header, main { width:calc(100% - 24px); }
+      .hero,.split { grid-template-columns:1fr; }
+      .stamp { justify-self:start; width:160px; }
+      .people { grid-template-columns:repeat(2,1fr); }
+      .card, .day, .note, form, .ledger, .share { max-width:100%; }
+      table { min-width:500px; }
     }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .18;
-      background-image: linear-gradient(90deg, #8f8067 1px, transparent 1px), linear-gradient(#8f8067 1px, transparent 1px);
-      background-size: 28px 28px;
-      mask-image: linear-gradient(to bottom, #000, transparent 70%);
-    }
-    header, main { width: min(1120px, calc(100% - 28px)); margin: auto; }
-    header { padding: 42px 0 20px; }
-    .eyebrow { color: var(--moss); font-size: 13px; letter-spacing: .18em; text-transform: uppercase; }
-    h1 { margin: 8px 0 8px; font-size: clamp(38px, 9vw, 86px); line-height: .94; font-weight: 500; }
-    .hero {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 22px;
-      align-items: end;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 24px;
-    }
-    .hero p { margin: 0; color: var(--soft); line-height: 1.8; max-width: 560px; }
-    .stamp {
-      justify-self: end;
-      width: min(260px, 100%);
-      aspect-ratio: 1;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      color: var(--moss);
-      background: rgba(255,250,241,.62);
-      font-size: 18px;
-      line-height: 1.7;
-    }
-    section { margin: 24px 0; }
-    h2 { margin: 0 0 14px; font-size: 24px; font-weight: 600; }
-    .days, .notes, .summary { display: grid; gap: 14px; }
-    .days { grid-template-columns: repeat(auto-fit, minmax(205px, 1fr)); }
-    .card {
-      background: rgba(255,250,241,.78);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      box-shadow: 0 18px 40px rgba(78,63,47,.08);
-    }
-    .day { padding: 16px; min-height: 100%; }
-    .date { color: var(--moss); font-size: 21px; font-weight: 700; }
-    .hotel { color: var(--soft); font-size: 13px; margin: 3px 0 12px; }
-    .event {
-      display: grid;
-      grid-template-columns: 52px 1fr;
-      gap: 8px;
-      padding: 8px 0;
-      border-top: 1px solid var(--line);
-      font-size: 14px;
-      line-height: 1.45;
-    }
-    .time { color: var(--rose); font-weight: 700; }
-    .notes { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-    .note { padding: 16px; }
-    .note h3 { margin: 0 0 8px; font-size: 17px; }
-    .note p { margin: 0; color: var(--soft); line-height: 1.75; font-size: 14px; }
-    a { color: var(--moss); font-weight: 700; }
-    .split {
-      display: grid;
-      grid-template-columns: minmax(280px, 360px) 1fr;
-      gap: 16px;
-      align-items: start;
-    }
-    form, .ledger { padding: 16px; }
-    label { display: block; margin: 12px 0 6px; color: var(--soft); font-size: 13px; font-weight: 700; }
-    input, select, button {
-      width: 100%;
-      min-height: 42px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 9px 11px;
-      color: var(--ink);
-      background: var(--cream);
-      font: inherit;
-    }
-    button {
-      margin-top: 12px;
-      cursor: pointer;
-      border: 0;
-      color: #fff;
-      background: var(--moss);
-      font-weight: 700;
-    }
-    .secondary { color: var(--moss); background: transparent; border: 1px solid var(--moss); }
-    .people { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .chip {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(255,255,255,.48);
-      font-size: 13px;
-    }
-    .chip input { width: 16px; min-height: 16px; accent-color: var(--moss); }
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; min-width: 560px; border-collapse: collapse; }
-    th, td { padding: 10px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; vertical-align: top; }
-    th { color: var(--soft); font-weight: 700; }
-    .summary { margin-top: 14px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
-    .balance { padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: rgba(247,241,231,.68); font-size: 14px; }
-    .positive { color: #486a48; font-weight: 800; }
-    .negative { color: #a35d4a; font-weight: 800; }
-    .share { padding: 16px; color: var(--soft); line-height: 1.75; }
-    @media (max-width: 760px) {
-      .hero, .split { grid-template-columns: 1fr; }
-      .stamp { justify-self: start; width: 160px; }
-      .people { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width:430px) {
+      header, main { width:calc(100% - 18px); }
+      .day, .note, form, .ledger, .share { padding:14px; }
+      table { min-width:460px; }
     }
   </style>
 </head>
@@ -189,6 +110,7 @@
           <button type="submit">新增支出</button>
           <button class="secondary" type="button" id="selectAll">全選 / 取消全選</button>
           <button class="secondary" type="button" id="clearAll">清空記帳</button>
+          <p id="syncStatus">連線中...</p>
         </form>
         <div class="card ledger">
           <div class="table-wrap">
@@ -198,18 +120,24 @@
             </table>
           </div>
           <div class="summary" id="summary"></div>
+          <div class="settlements">
+            <h3>最少付款次數</h3>
+            <div class="settlement-list" id="settlements"></div>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="card share">
-      <strong>分享方式</strong><br>
-      這份目前是本機網頁。若要讓同學用手機直接開啟，需要上傳到 GitHub Pages、Netlify Drop、Vercel 或其他靜態網頁空間，取得一組 https 連結後即可分享。
+      <strong>共用記帳</strong><br>
+      此頁已串接 Google Sheets。新增、刪除或清空支出後，所有人重新整理頁面即可看到最新資料。
     </section>
   </main>
 
   <script>
     const travelers = ["Iris", "靈毓", "LuLu", "偉廷", "安", "丹尼", "Jovi", "Lin", "佳錚", "吟禧", "毅威", "Charles"];
+    const API_URL = "https://script.google.com/macros/s/AKfycbze_qFWoGpE_v0neliKn03o4qsr4eoKq71mSzzZ0XXXGW0WLSAd0is3fIIJNr8Nqs30/exec";
+    const API_TOKEN = "chiangmai2026";
     const days = [
       ["6/5 Fri", "Sunmai Pool Villa", [["10:20", "BR257 / CI852 抵達"], ["12:30", "Ekachan 午餐"], ["14:00", "Check in & TG110 抵達"], ["16:00", "古城 / 草編街 / 瓦洛洛市場"], ["20:00", "長康路夜市"], ["22:00", "Bar optional"]]],
       ["6/6 Sat", "Sunmai Pool Villa", [["08:00", "Grab 早餐"], ["12:00", "Saturday Market"], ["16:00", "Crystal bowl sound bath，2500 THB"], ["18:00", "Villa private chef BBQ，950 THB"]]],
@@ -219,21 +147,20 @@
     ];
 
     const dayRoot = document.querySelector("#days");
+    const payer = document.querySelector("#payer");
+    const people = document.querySelector("#people");
+    const rows = document.querySelector("#expenseRows");
+    const summary = document.querySelector("#summary");
+    const settlements = document.querySelector("#settlements");
+    const syncStatus = document.querySelector("#syncStatus");
+    let expenses = [];
+
     days.forEach(([date, hotel, events]) => {
       const card = document.createElement("article");
       card.className = "card day";
       card.innerHTML = `<div class="date">${date}</div><div class="hotel">${hotel}</div>${events.map(([t, x]) => `<div class="event"><span class="time">${t}</span><span>${x}</span></div>`).join("")}`;
       dayRoot.appendChild(card);
     });
-
-    const payer = document.querySelector("#payer");
-    const people = document.querySelector("#people");
-    const rows = document.querySelector("#expenseRows");
-    const summary = document.querySelector("#summary");
-    let expenses = JSON.parse(localStorage.getItem("chiangmai-expenses-v2") || "null") || [
-      { title: "Crystal bowl sound bath", amount: 2500, payer: "Iris", participants: travelers },
-      { title: "Villa BBQ", amount: 950, payer: "LuLu", participants: travelers }
-    ];
 
     travelers.forEach(name => {
       payer.add(new Option(name, name));
@@ -244,7 +171,41 @@
     });
 
     const money = value => `${Math.round(value).toLocaleString()} THB`;
-    const save = () => localStorage.setItem("chiangmai-expenses-v2", JSON.stringify(expenses));
+    const setStatus = text => syncStatus.textContent = text;
+
+    async function apiPost(payload) {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ token: API_TOKEN, ...payload })
+      });
+      return response.json();
+    }
+
+    async function loadExpenses() {
+      try {
+        setStatus("正在讀取共用記帳...");
+        const response = await fetch(API_URL);
+        const result = await response.json();
+        expenses = (result.data || []).filter(item => item.title).map(item => ({
+          id: item.id || crypto.randomUUID(),
+          title: item.title,
+          amount: Number(item.amount || 0),
+          payer: item.payer,
+          participants: Array.isArray(item.participants) ? item.participants : String(item.participants || "").split(",").filter(Boolean)
+        }));
+        render();
+        setStatus("已同步 Google Sheets");
+      } catch (error) {
+        console.error(error);
+        setStatus("同步失敗，請檢查 Apps Script 部署權限");
+      }
+    }
+
+    async function syncAllExpenses() {
+      await apiPost({ action: "clear" });
+      for (const item of expenses) await apiPost({ action: "add", ...item });
+    }
 
     function render() {
       rows.innerHTML = expenses.map((item, index) => `
@@ -260,34 +221,97 @@
         const value = balance[name];
         return `<div class="balance"><strong>${name}</strong><br><span class="${value >= 0 ? "positive" : "negative"}">${value >= 0 ? "應收" : "應付"} ${money(Math.abs(value))}</span></div>`;
       }).join("");
-      save();
+      renderSettlements(balance);
     }
 
-    document.querySelector("#expenseForm").addEventListener("submit", event => {
+    function renderSettlements(balance) {
+      const debtors = [];
+      const creditors = [];
+      travelers.forEach(name => {
+        const value = Math.round(balance[name]);
+        if (value < 0) debtors.push({ name, amount: Math.abs(value) });
+        if (value > 0) creditors.push({ name, amount: value });
+      });
+
+      const transfers = [];
+      let i = 0;
+      let j = 0;
+      while (i < debtors.length && j < creditors.length) {
+        const amount = Math.min(debtors[i].amount, creditors[j].amount);
+        if (amount > 0) transfers.push({ from: debtors[i].name, to: creditors[j].name, amount });
+        debtors[i].amount -= amount;
+        creditors[j].amount -= amount;
+        if (debtors[i].amount === 0) i++;
+        if (creditors[j].amount === 0) j++;
+      }
+
+      settlements.innerHTML = transfers.length
+        ? transfers.map(item => `<div class="settlement"><strong>${item.from}</strong> 付給 <strong>${item.to}</strong>：${money(item.amount)}</div>`).join("")
+        : `<div class="settlement">目前無需付款</div>`;
+    }
+
+    document.querySelector("#expenseForm").addEventListener("submit", async event => {
       event.preventDefault();
       const participants = [...people.querySelectorAll("input:checked")].map(input => input.value);
       if (!participants.length) return alert("請至少選一位分攤對象");
-      const expenseTitle = document.querySelector("#title").value.trim();
-      const expenseAmount = Number(document.querySelector("#amount").value);
-      expenses.push({ title: expenseTitle, amount: expenseAmount, payer: payer.value, participants });
-      event.currentTarget.reset();
-      people.querySelectorAll("input").forEach(input => input.checked = true);
-      render();
+      const item = {
+        id: crypto.randomUUID(),
+        title: document.querySelector("#title").value.trim(),
+        amount: Number(document.querySelector("#amount").value),
+        payer: payer.value,
+        participants
+      };
+      try {
+        setStatus("正在新增支出...");
+        await apiPost({ action: "add", ...item });
+        expenses.push(item);
+        render();
+        setStatus("已同步 Google Sheets");
+        event.currentTarget.reset();
+        people.querySelectorAll("input").forEach(input => input.checked = true);
+      } catch (error) {
+        console.error(error);
+        setStatus("新增失敗，請稍後再試");
+      }
     });
-    rows.addEventListener("click", event => {
+
+    rows.addEventListener("click", async event => {
       if (event.target.dataset.delete === undefined) return;
       expenses.splice(Number(event.target.dataset.delete), 1);
-      render();
+      try {
+        setStatus("正在同步刪除...");
+        await syncAllExpenses();
+        render();
+        setStatus("已同步 Google Sheets");
+      } catch (error) {
+        console.error(error);
+        setStatus("刪除同步失敗，請重新整理確認");
+      }
     });
+
     document.querySelector("#selectAll").addEventListener("click", () => {
       const checks = [...people.querySelectorAll("input")];
       const shouldCheck = checks.some(input => !input.checked);
       checks.forEach(input => input.checked = shouldCheck);
     });
-    document.querySelector("#clearAll").addEventListener("click", () => {
-      if (confirm("確定清空所有記帳資料？")) expenses = [], render();
+
+    document.querySelector("#clearAll").addEventListener("click", async () => {
+      if (!confirm("確定清空所有記帳資料？")) return;
+      try {
+        setStatus("正在清空共用記帳...");
+        await apiPost({ action: "clear" });
+        expenses = [];
+        render();
+        setStatus("已清空 Google Sheets");
+      } catch (error) {
+        console.error(error);
+        setStatus("清空失敗，請稍後再試");
+      }
     });
+
     render();
+    loadExpenses();
   </script>
 </body>
 </html>
+
