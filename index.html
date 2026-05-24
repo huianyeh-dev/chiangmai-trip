@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>清邁之旅｜2026</title>
+  <style>
+    :root {
+      --bg: #f7f1e7;
+      --cream: #fffaf1;
+      --ink: #2f2b25;
+      --soft: #857b6d;
+      --sage: #88957b;
+      --moss: #5e7153;
+      --sand: #d7bea0;
+      --rose: #bd8c7d;
+      --line: rgba(47,43,37,.14);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 14% 12%, rgba(189,140,125,.18), transparent 28%),
+        radial-gradient(circle at 88% 0%, rgba(136,149,123,.24), transparent 25%),
+        var(--bg);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .18;
+      background-image: linear-gradient(90deg, #8f8067 1px, transparent 1px), linear-gradient(#8f8067 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(to bottom, #000, transparent 70%);
+    }
+    header, main { width: min(1120px, calc(100% - 28px)); margin: auto; }
+    header { padding: 42px 0 20px; }
+    .eyebrow { color: var(--moss); font-size: 13px; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { margin: 8px 0 8px; font-size: clamp(38px, 9vw, 86px); line-height: .94; font-weight: 500; }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 22px;
+      align-items: end;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 24px;
+    }
+    .hero p { margin: 0; color: var(--soft); line-height: 1.8; max-width: 560px; }
+    .stamp {
+      justify-self: end;
+      width: min(260px, 100%);
+      aspect-ratio: 1;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--moss);
+      background: rgba(255,250,241,.62);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    section { margin: 24px 0; }
+    h2 { margin: 0 0 14px; font-size: 24px; font-weight: 600; }
+    .days, .notes, .summary { display: grid; gap: 14px; }
+    .days { grid-template-columns: repeat(auto-fit, minmax(205px, 1fr)); }
+    .card {
+      background: rgba(255,250,241,.78);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 18px 40px rgba(78,63,47,.08);
+    }
+    .day { padding: 16px; min-height: 100%; }
+    .date { color: var(--moss); font-size: 21px; font-weight: 700; }
+    .hotel { color: var(--soft); font-size: 13px; margin: 3px 0 12px; }
+    .event {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 8px;
+      padding: 8px 0;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .time { color: var(--rose); font-weight: 700; }
+    .notes { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+    .note { padding: 16px; }
+    .note h3 { margin: 0 0 8px; font-size: 17px; }
+    .note p { margin: 0; color: var(--soft); line-height: 1.75; font-size: 14px; }
+    a { color: var(--moss); font-weight: 700; }
+    .split {
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    form, .ledger { padding: 16px; }
+    label { display: block; margin: 12px 0 6px; color: var(--soft); font-size: 13px; font-weight: 700; }
+    input, select, button {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 9px 11px;
+      color: var(--ink);
+      background: var(--cream);
+      font: inherit;
+    }
+    button {
+      margin-top: 12px;
+      cursor: pointer;
+      border: 0;
+      color: #fff;
+      background: var(--moss);
+      font-weight: 700;
+    }
+    .secondary { color: var(--moss); background: transparent; border: 1px solid var(--moss); }
+    .people { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255,255,255,.48);
+      font-size: 13px;
+    }
+    .chip input { width: 16px; min-height: 16px; accent-color: var(--moss); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; min-width: 560px; border-collapse: collapse; }
+    th, td { padding: 10px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; vertical-align: top; }
+    th { color: var(--soft); font-weight: 700; }
+    .summary { margin-top: 14px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    .balance { padding: 12px; border: 1px solid var(--line); border-radius: 8px; background: rgba(247,241,231,.68); font-size: 14px; }
+    .positive { color: #486a48; font-weight: 800; }
+    .negative { color: #a35d4a; font-weight: 800; }
+    .share { padding: 16px; color: var(--soft); line-height: 1.75; }
+    @media (max-width: 760px) {
+      .hero, .split { grid-template-columns: 1fr; }
+      .stamp { justify-self: start; width: 160px; }
+      .people { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hero">
+      <div>
+        <div class="eyebrow">Chiang Mai Retreat</div>
+        <h1>清邁之旅</h1>
+        <p>2026/6/5 - 6/9｜行程、行前提醒與旅費分帳集中在這一頁。手機開啟即可新增支出與查看每人應收應付。</p>
+      </div>
+      <div class="stamp">12 Travelers<br>5 Days<br>Chiang Mai</div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>行程</h2>
+      <div class="days" id="days"></div>
+    </section>
+
+    <section>
+      <h2>行前提醒</h2>
+      <div class="notes">
+        <article class="card note"><h3>入境</h3><p>出發前 3 天內填寫 <a href="https://tdac.immigration.go.th" target="_blank">TDAC</a>，護照、機票、飯店與保險資料請截圖備份。</p></article>
+        <article class="card note"><h3>海關</h3><p>酒 1L、香菸 200 支內較保險；若有超量、商用品或管制品，入境請走紅線申報。</p></article>
+        <article class="card note"><h3>天氣</h3><p>6 月清邁炎熱潮濕、午後易雨。帶折傘或雨衣、防水袋、防曬、防蚊、常備藥。</p></article>
+        <article class="card note"><h3>穿搭</h3><p>瀑布帶可濕衣物與止滑鞋；寺廟遮肩過膝；Villa 小泳池可帶泳衣、拖鞋、濕衣袋。</p></article>
+      </div>
+    </section>
+
+    <section>
+      <h2>旅費分帳</h2>
+      <div class="split">
+        <form class="card" id="expenseForm">
+          <label for="title">項目</label>
+          <input id="title" required placeholder="例：午餐、Grab、Villa BBQ">
+          <label for="amount">金額 THB</label>
+          <input id="amount" required type="number" min="0" step="1" placeholder="950">
+          <label for="payer">付款人</label>
+          <select id="payer"></select>
+          <label>分攤對象</label>
+          <div class="people" id="people"></div>
+          <button type="submit">新增支出</button>
+          <button class="secondary" type="button" id="selectAll">全選 / 取消全選</button>
+          <button class="secondary" type="button" id="clearAll">清空記帳</button>
+        </form>
+        <div class="card ledger">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>項目</th><th>付款</th><th>分攤</th><th>金額</th><th></th></tr></thead>
+              <tbody id="expenseRows"></tbody>
+            </table>
+          </div>
+          <div class="summary" id="summary"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card share">
+      <strong>分享方式</strong><br>
+      這份目前是本機網頁。若要讓同學用手機直接開啟，需要上傳到 GitHub Pages、Netlify Drop、Vercel 或其他靜態網頁空間，取得一組 https 連結後即可分享。
+    </section>
+  </main>
+
+  <script>
+    const travelers = ["Iris", "靈毓", "LuLu", "偉廷", "安", "丹尼", "Jovi", "Lin", "佳錚", "吟禧", "毅威", "Charles"];
+    const days = [
+      ["6/5 Fri", "Sunmai Pool Villa", [["10:20", "BR257 / CI852 抵達"], ["12:30", "Ekachan 午餐"], ["14:00", "Check in & TG110 抵達"], ["16:00", "古城 / 草編街 / 瓦洛洛市場"], ["20:00", "長康路夜市"], ["22:00", "Bar optional"]]],
+      ["6/6 Sat", "Sunmai Pool Villa", [["08:00", "Grab 早餐"], ["12:00", "Saturday Market"], ["16:00", "Crystal bowl sound bath，2500 THB"], ["18:00", "Villa private chef BBQ，950 THB"]]],
+      ["6/7 Sun", "Sunmai Pool Villa", [["08:00", "飯店早餐"], ["10:00", "黏黏瀑布玩水"], ["12:00", "Lunch"], ["14:00", "Temple"], ["16:00", "Spa & Massage"], ["18:00", "餐酒"]]],
+      ["6/8 Mon", "寧曼路", [["08:00", "Brunch"], ["11:35", "BR258 起飛（Iris）"], ["12:00", "Check out / 新飯店放行李"], ["14:00", "Gallery Kang Wat 市集 / 手作 / 咖啡"], ["18:00", "Dinner"], ["20:00", "寧曼路夜市"]]],
+      ["6/9 Tue", "返程日", [["08:00", "飯店早餐"], ["11:20", "CI852 起飛（佳錚、吟禧、偉廷、LuLu、毅威）"], ["00:05", "FD 起飛（靈毓）"]]]
+    ];
+
+    const dayRoot = document.querySelector("#days");
+    days.forEach(([date, hotel, events]) => {
+      const card = document.createElement("article");
+      card.className = "card day";
+      card.innerHTML = `<div class="date">${date}</div><div class="hotel">${hotel}</div>${events.map(([t, x]) => `<div class="event"><span class="time">${t}</span><span>${x}</span></div>`).join("")}`;
+      dayRoot.appendChild(card);
+    });
+
+    const payer = document.querySelector("#payer");
+    const people = document.querySelector("#people");
+    const rows = document.querySelector("#expenseRows");
+    const summary = document.querySelector("#summary");
+    let expenses = JSON.parse(localStorage.getItem("chiangmai-expenses-v2") || "null") || [
+      { title: "Crystal bowl sound bath", amount: 2500, payer: "Iris", participants: travelers },
+      { title: "Villa BBQ", amount: 950, payer: "LuLu", participants: travelers }
+    ];
+
+    travelers.forEach(name => {
+      payer.add(new Option(name, name));
+      const label = document.createElement("label");
+      label.className = "chip";
+      label.innerHTML = `<input type="checkbox" value="${name}" checked> ${name}`;
+      people.appendChild(label);
+    });
+
+    const money = value => `${Math.round(value).toLocaleString()} THB`;
+    const save = () => localStorage.setItem("chiangmai-expenses-v2", JSON.stringify(expenses));
+
+    function render() {
+      rows.innerHTML = expenses.map((item, index) => `
+        <tr><td>${item.title}</td><td>${item.payer}</td><td>${item.participants.length} 人</td><td>${money(item.amount)}</td><td><button class="secondary" type="button" data-delete="${index}">刪除</button></td></tr>
+      `).join("");
+      const balance = Object.fromEntries(travelers.map(name => [name, 0]));
+      expenses.forEach(item => {
+        balance[item.payer] += Number(item.amount);
+        const share = Number(item.amount) / item.participants.length;
+        item.participants.forEach(name => balance[name] -= share);
+      });
+      summary.innerHTML = travelers.map(name => {
+        const value = balance[name];
+        return `<div class="balance"><strong>${name}</strong><br><span class="${value >= 0 ? "positive" : "negative"}">${value >= 0 ? "應收" : "應付"} ${money(Math.abs(value))}</span></div>`;
+      }).join("");
+      save();
+    }
+
+    document.querySelector("#expenseForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const participants = [...people.querySelectorAll("input:checked")].map(input => input.value);
+      if (!participants.length) return alert("請至少選一位分攤對象");
+      const expenseTitle = document.querySelector("#title").value.trim();
+      const expenseAmount = Number(document.querySelector("#amount").value);
+      expenses.push({ title: expenseTitle, amount: expenseAmount, payer: payer.value, participants });
+      event.currentTarget.reset();
+      people.querySelectorAll("input").forEach(input => input.checked = true);
+      render();
+    });
+    rows.addEventListener("click", event => {
+      if (event.target.dataset.delete === undefined) return;
+      expenses.splice(Number(event.target.dataset.delete), 1);
+      render();
+    });
+    document.querySelector("#selectAll").addEventListener("click", () => {
+      const checks = [...people.querySelectorAll("input")];
+      const shouldCheck = checks.some(input => !input.checked);
+      checks.forEach(input => input.checked = shouldCheck);
+    });
+    document.querySelector("#clearAll").addEventListener("click", () => {
+      if (confirm("確定清空所有記帳資料？")) expenses = [], render();
+    });
+    render();
+  </script>
+</body>
+</html>
