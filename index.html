@@ -5,18 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>清邁之旅｜2026</title>
   <style>
-    :root { --bg:#f7f1e7; --cream:#fffaf1; --ink:#2f2b25; --soft:#857b6d; --sage:#88957b; --moss:#5e7153; --rose:#bd8c7d; --line:rgba(47,43,37,.14); }
-    * { box-sizing: border-box; }
+    :root { --bg:#f7f1e7; --cream:#fffaf1; --ink:#2f2b25; --soft:#857b6d; --moss:#5e7153; --rose:#bd8c7d; --line:rgba(47,43,37,.14); }
+    * { box-sizing:border-box; }
     body { margin:0; color:var(--ink); font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif; background:radial-gradient(circle at 14% 12%,rgba(189,140,125,.18),transparent 28%),radial-gradient(circle at 88% 0%,rgba(136,149,123,.24),transparent 25%),var(--bg); }
     body::before { content:""; position:fixed; inset:0; pointer-events:none; opacity:.16; background-image:linear-gradient(90deg,#8f8067 1px,transparent 1px),linear-gradient(#8f8067 1px,transparent 1px); background-size:28px 28px; mask-image:linear-gradient(to bottom,#000,transparent 70%); }
     header, main { width:min(1120px,calc(100% - 28px)); margin:auto; }
     main { overflow:hidden; }
     header { padding:42px 0 20px; }
-    .hero { display:grid; grid-template-columns:1fr; gap:22px; align-items:end; border-bottom:1px solid var(--line); padding-bottom:24px; }
+    .hero { display:grid; grid-template-columns:1fr; border-bottom:1px solid var(--line); padding-bottom:24px; }
     .eyebrow { color:var(--moss); font-size:13px; letter-spacing:.18em; text-transform:uppercase; }
     h1 { margin:8px 0; font-size:clamp(38px,9vw,86px); line-height:.94; font-weight:500; }
     h2 { margin:0 0 14px; font-size:24px; font-weight:600; }
-    .share { color:var(--soft); line-height:1.8; }
     section { margin:24px 0; }
     .card { background:rgba(255,250,241,.78); border:1px solid var(--line); border-radius:8px; box-shadow:0 18px 40px rgba(78,63,47,.08); }
     .days, .notes, .summary { display:grid; gap:14px; }
@@ -28,7 +27,7 @@
     .time { color:var(--rose); font-weight:700; }
     .notes { grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); }
     .note h3 { margin:0 0 8px; font-size:17px; }
-    .note p { margin:0; color:var(--soft); line-height:1.75; font-size:14px; }
+    .note p, .share { margin:0; color:var(--soft); line-height:1.75; font-size:14px; }
     a { color:var(--moss); font-weight:700; }
     .split { display:grid; grid-template-columns:minmax(280px,360px) 1fr; gap:16px; align-items:start; }
     label { display:block; margin:12px 0 6px; color:var(--soft); font-size:13px; font-weight:700; }
@@ -38,11 +37,11 @@
     .people { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
     .chip { display:flex; align-items:center; gap:6px; padding:8px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.48); font-size:13px; }
     .chip input { width:16px; min-height:16px; accent-color:var(--moss); }
-    .split-mode { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .split-mode { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
     .mode-option { display:flex; align-items:center; gap:8px; padding:9px 10px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.48); font-size:14px; }
     .mode-option input { width:16px; min-height:16px; accent-color:var(--moss); }
-    .custom-shares { display:none; gap:8px; margin-top:8px; }
-    .custom-shares.active { display:grid; }
+    .share-inputs { display:none; gap:8px; margin-top:8px; }
+    .share-inputs.active { display:grid; }
     .share-row { display:grid; grid-template-columns:1fr 110px; gap:8px; align-items:center; font-size:13px; color:var(--soft); }
     .share-row input { min-height:36px; padding:7px 9px; }
     .table-wrap { overflow-x:auto; }
@@ -50,26 +49,15 @@
     th, td { padding:10px; border-bottom:1px solid var(--line); text-align:left; font-size:14px; vertical-align:top; }
     th { color:var(--soft); font-weight:700; }
     .summary { margin-top:14px; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); }
-    .balance { padding:12px; border:1px solid var(--line); border-radius:8px; background:rgba(247,241,231,.68); font-size:14px; }
+    .balance, .settlement { padding:12px; border:1px solid var(--line); border-radius:8px; background:rgba(247,241,231,.68); font-size:14px; }
+    .positive { color:#486a48; font-weight:800; }
+    .negative { color:#a35d4a; font-weight:800; }
     .settlements { margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
     .settlements h3 { margin:0 0 10px; font-size:17px; }
     .settlement-list { display:grid; gap:8px; }
-    .settlement { padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:rgba(255,255,255,.42); font-size:14px; }
-    .positive { color:#486a48; font-weight:800; }
-    .negative { color:#a35d4a; font-weight:800; }
     #syncStatus { margin:12px 0 0; color:var(--soft); font-size:13px; line-height:1.6; }
-    @media (max-width:760px) {
-      header, main { width:calc(100% - 24px); }
-      .hero,.split { grid-template-columns:1fr; }
-      .people { grid-template-columns:repeat(2,1fr); }
-      .card, .day, .note, form, .ledger, .share { max-width:100%; }
-      table { min-width:500px; }
-    }
-    @media (max-width:430px) {
-      header, main { width:calc(100% - 18px); }
-      .day, .note, form, .ledger, .share { padding:14px; }
-      table { min-width:460px; }
-    }
+    @media (max-width:760px) { header, main { width:calc(100% - 24px); } .split { grid-template-columns:1fr; } .people { grid-template-columns:repeat(2,1fr); } .split-mode { grid-template-columns:1fr; } .card,.day,.note,form,.ledger,.share { max-width:100%; } table { min-width:500px; } }
+    @media (max-width:430px) { header, main { width:calc(100% - 18px); } .day,.note,form,.ledger,.share { padding:14px; } table { min-width:460px; } }
   </style>
 </head>
 <body>
@@ -112,10 +100,11 @@
           <div class="people" id="people"></div>
           <label>分攤方式</label>
           <div class="split-mode">
-            <label class="mode-option"><input type="radio" name="splitMode" value="equal" checked> 平均分攤</label>
-            <label class="mode-option"><input type="radio" name="splitMode" value="custom"> 自訂金額</label>
+            <label class="mode-option"><input type="radio" name="splitMode" value="equal" checked> 平均</label>
+            <label class="mode-option"><input type="radio" name="splitMode" value="custom"> 金額</label>
+            <label class="mode-option"><input type="radio" name="splitMode" value="ratio"> 比例</label>
           </div>
-          <div class="custom-shares" id="customShares"></div>
+          <div class="share-inputs" id="customShares"></div>
           <button type="submit">新增支出</button>
           <button class="secondary" type="button" id="selectAll">全選 / 取消全選</button>
           <button class="secondary" type="button" id="clearAll">清空記帳</button>
@@ -147,13 +136,49 @@
     const travelers = ["Iris", "靈毓", "LuLu", "偉廷", "安", "丹尼", "Jovi", "Lin", "佳錚", "吟禧", "毅威", "Charles"];
     const API_URL = "https://script.google.com/macros/s/AKfycbze_qFWoGpE_v0neliKn03o4qsr4eoKq71mSzzZ0XXXGW0WLSAd0is3fIIJNr8Nqs30/exec";
     const API_TOKEN = "chiangmai2026";
-    const days = [
-      ["6/5 Fri", "Sunmai Pool Villa", [["10:20", "BR257 抵達（Iris、靈毓、LuLu、偉廷、安、丹尼）／CI852 抵達（Jovi、Lin）"], ["12:30", "Ekachan 午餐"], ["14:00", "Check in & TG110 抵達（佳錚、吟禧、毅威）"], ["16:00", "古城 / 草編街 / 瓦洛洛市場"], ["20:00", "長康路夜市"], ["22:00", "Bar optional"]]],
-      ["6/6 Sat", "Sunmai Pool Villa", [["08:00", "Grab 早餐"], ["12:00", "Saturday Market"], ["16:00", "Crystal bowl sound bath，2500 THB/class"], ["18:00", "Villa private chef BBQ，950 THB/pp"]]],
-      ["6/7 Sun", "Sunmai Pool Villa", [["08:00", "飯店早餐"], ["10:00", "黏黏瀑布玩水"], ["12:00", "Lunch"], ["14:00", "Temple"], ["16:00", "Spa & Massage"], ["18:00", "餐酒"]]],
-      ["6/8 Mon", "寧曼路", [["08:00", "Brunch"], ["11:35", "BR258 起飛（Iris）"], ["12:00", "Check out / 新飯店放行李"], ["14:00", "Gallery Kang Wat 市集 / 手作 / 咖啡"], ["18:00", "Dinner"], ["20:00", "寧曼路夜市"]]],
-      ["6/9 Tue", "返程日", [["08:00", "飯店早餐"], ["11:20", "CI852 起飛（佳錚、吟禧、偉廷、LuLu、毅威）"], ["00:05", "FD 起飛（靈毓）"]]]
-    ];
+
+    /*
+      行程請直接修改下方文字。
+      格式：
+      日期 | 住宿或區域
+      時間 | 內容
+      空一行代表下一天
+    */
+    const itineraryText = `
+6/5 Fri | Sunmai Pool Villa
+10:20 | BR257 抵達（Iris、靈毓、LuLu、偉廷、安、丹尼）／CI852 抵達（Jovi、Lin）
+12:30 | Ekachan 午餐
+14:00 | Check in & TG110 抵達（佳錚、吟禧、毅威）
+16:00 | 古城 / 草編街 / 瓦洛洛市場
+20:00 | 長康路夜市
+22:00 | Bar optional
+
+6/6 Sat | Sunmai Pool Villa
+08:00 | Grab 早餐
+12:00 | Saturday Market
+16:00 | Crystal bowl sound bath，2500 THB/class
+18:00 | Villa private chef BBQ，950 THB/pp
+
+6/7 Sun | Sunmai Pool Villa
+08:00 | 飯店早餐
+10:00 | 黏黏瀑布玩水
+12:00 | Lunch
+14:00 | Temple
+16:00 | Spa & Massage
+18:00 | 餐酒
+
+6/8 Mon | 寧曼路
+08:00 | Brunch
+11:35 | BR258 起飛（Iris、靈毓）
+12:00 | Check out / 新飯店放行李
+14:00 | Gallery Kang Wat 市集 / 手作 / 咖啡
+18:00 | Dinner
+20:00 | 寧曼路夜市
+
+6/9 Tue | 返程日
+08:00 | 飯店早餐
+11:20 | CI852 起飛（佳錚、吟禧、偉廷、LuLu、毅威）
+`;
 
     const dayRoot = document.querySelector("#days");
     const payer = document.querySelector("#payer");
@@ -165,7 +190,19 @@
     const syncStatus = document.querySelector("#syncStatus");
     let expenses = [];
 
-    days.forEach(([date, hotel, events]) => {
+    function parseItinerary(text) {
+      return text.trim().split(/\n\s*\n/).map(block => {
+        const lines = block.trim().split("\n").filter(Boolean);
+        const [date, hotel = ""] = lines.shift().split("|").map(x => x.trim());
+        const events = lines.map(line => {
+          const [time, ...rest] = line.split("|");
+          return [time.trim(), rest.join("|").trim()];
+        });
+        return [date, hotel, events];
+      });
+    }
+
+    parseItinerary(itineraryText).forEach(([date, hotel, events]) => {
       const card = document.createElement("article");
       card.className = "card day";
       card.innerHTML = `<div class="date">${date}</div><div class="hotel">${hotel}</div>${events.map(([t, x]) => `<div class="event"><span class="time">${t}</span><span>${x}</span></div>`).join("")}`;
@@ -176,25 +213,27 @@
       payer.add(new Option(name, name));
       const label = document.createElement("label");
       label.className = "chip";
-      label.innerHTML = `<input type="checkbox" value="${name}" checked data-person="${name}"> ${name}`;
+      label.innerHTML = `<input type="checkbox" value="${name}" checked> ${name}`;
       people.appendChild(label);
       const row = document.createElement("label");
       row.className = "share-row";
       row.dataset.person = name;
-      row.innerHTML = `<span>${name}</span><input type="number" min="0" step="1" placeholder="0" data-share="${name}">`;
+      row.innerHTML = `<span>${name}</span><input type="number" min="0" step="0.01" placeholder="0" data-share="${name}">`;
       customShares.appendChild(row);
     });
 
     const money = value => `${Math.round(value).toLocaleString()} THB`;
+    const round2 = value => Math.round(value * 100) / 100;
     const setStatus = text => syncStatus.textContent = text;
 
     async function apiPost(payload) {
-      const response = await fetch(API_URL, {
+      await fetch(API_URL, {
         method: "POST",
+        mode: "no-cors",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify({ token: API_TOKEN, ...payload })
       });
-      return response.json();
+      return { ok: true };
     }
 
     async function loadExpenses() {
@@ -252,7 +291,6 @@
         if (value < 0) debtors.push({ name, amount: Math.abs(value) });
         if (value > 0) creditors.push({ name, amount: value });
       });
-
       const transfers = [];
       let i = 0;
       let j = 0;
@@ -264,10 +302,31 @@
         if (debtors[i].amount === 0) i++;
         if (creditors[j].amount === 0) j++;
       }
-
       settlements.innerHTML = transfers.length
         ? transfers.map(item => `<div class="settlement"><strong>${item.from}</strong> 付給 <strong>${item.to}</strong>：${money(item.amount)}</div>`).join("")
         : `<div class="settlement">目前無需付款</div>`;
+    }
+
+    function buildShares(participants, amount, splitMode) {
+      if (splitMode === "equal") return null;
+      const values = {};
+      participants.forEach(name => {
+        values[name] = Number(customShares.querySelector(`[data-share="${name}"]`).value || 0);
+      });
+      const total = Object.values(values).reduce((sum, value) => sum + value, 0);
+      if (total <= 0) throw new Error(splitMode === "ratio" ? "請填寫比例" : "請填寫自訂分攤金額");
+      if (splitMode === "custom") {
+        if (Math.round(total) !== Math.round(amount)) throw new Error("自訂分攤金額加總需等於支出總金額");
+        return values;
+      }
+      const shares = {};
+      let assigned = 0;
+      participants.forEach((name, index) => {
+        const share = index === participants.length - 1 ? round2(amount - assigned) : round2(amount * values[name] / total);
+        shares[name] = share;
+        assigned += share;
+      });
+      return shares;
     }
 
     document.querySelector("#expenseForm").addEventListener("submit", async event => {
@@ -276,15 +335,11 @@
       if (!participants.length) return alert("請至少選一位分攤對象");
       const splitMode = document.querySelector("input[name='splitMode']:checked").value;
       const amount = Number(document.querySelector("#amount").value);
-      let shares = null;
-      if (splitMode === "custom") {
-        shares = {};
-        participants.forEach(name => {
-          shares[name] = Number(customShares.querySelector(`[data-share="${name}"]`).value || 0);
-        });
-        const totalShares = Object.values(shares).reduce((sum, value) => sum + value, 0);
-        if (totalShares <= 0) return alert("請填寫自訂分攤金額");
-        if (Math.round(totalShares) !== Math.round(amount)) return alert("自訂分攤金額加總需等於支出總金額");
+      let shares;
+      try {
+        shares = buildShares(participants, amount, splitMode);
+      } catch (error) {
+        return alert(error.message);
       }
       const item = {
         id: crypto.randomUUID(),
@@ -294,74 +349,60 @@
         participants,
         shares
       };
-      try {
-        setStatus("正在新增支出...");
-        await apiPost({ action: "add", ...item });
-        expenses.push(item);
-        render();
-        setStatus("已同步 Google Sheets");
-        event.currentTarget.reset();
-        people.querySelectorAll("input").forEach(input => input.checked = true);
-        customShares.querySelectorAll("input").forEach(input => input.value = "");
-        document.querySelector("input[name='splitMode'][value='equal']").checked = true;
-        updateCustomShareVisibility();
-      } catch (error) {
-        console.error(error);
-        setStatus("新增失敗，請稍後再試");
-      }
+      setStatus("正在新增支出...");
+      await apiPost({ action: "add", ...item });
+      expenses.push(item);
+      render();
+      setStatus("已同步 Google Sheets");
+      event.currentTarget.reset();
+      people.querySelectorAll("input").forEach(input => input.checked = true);
+      customShares.querySelectorAll("input").forEach(input => input.value = "");
+      document.querySelector("input[name='splitMode'][value='equal']").checked = true;
+      updateShareInputs();
     });
 
     rows.addEventListener("click", async event => {
       if (event.target.dataset.delete === undefined) return;
       expenses.splice(Number(event.target.dataset.delete), 1);
-      try {
-        setStatus("正在同步刪除...");
-        await syncAllExpenses();
-        render();
-        setStatus("已同步 Google Sheets");
-      } catch (error) {
-        console.error(error);
-        setStatus("刪除同步失敗，請重新整理確認");
-      }
+      setStatus("正在同步刪除...");
+      await syncAllExpenses();
+      render();
+      setStatus("已同步 Google Sheets");
     });
 
     document.querySelector("#selectAll").addEventListener("click", () => {
       const checks = [...people.querySelectorAll("input")];
       const shouldCheck = checks.some(input => !input.checked);
       checks.forEach(input => input.checked = shouldCheck);
-      updateCustomShareVisibility();
+      updateShareInputs();
     });
 
-    function updateCustomShareVisibility() {
-      const isCustom = document.querySelector("input[name='splitMode']:checked").value === "custom";
-      customShares.classList.toggle("active", isCustom);
+    function updateShareInputs() {
+      const mode = document.querySelector("input[name='splitMode']:checked").value;
+      customShares.classList.toggle("active", mode !== "equal");
       const selected = new Set([...people.querySelectorAll("input:checked")].map(input => input.value));
       customShares.querySelectorAll(".share-row").forEach(row => {
         row.style.display = selected.has(row.dataset.person) ? "grid" : "none";
+        const input = row.querySelector("input");
+        input.placeholder = mode === "ratio" ? "比例" : "金額";
       });
     }
 
-    document.querySelectorAll("input[name='splitMode']").forEach(input => input.addEventListener("change", updateCustomShareVisibility));
-    people.addEventListener("change", updateCustomShareVisibility);
+    document.querySelectorAll("input[name='splitMode']").forEach(input => input.addEventListener("change", updateShareInputs));
+    people.addEventListener("change", updateShareInputs);
 
     document.querySelector("#clearAll").addEventListener("click", async () => {
       if (!confirm("確定清空所有記帳資料？")) return;
-      try {
-        setStatus("正在清空共用記帳...");
-        await apiPost({ action: "clear" });
-        expenses = [];
-        render();
-        setStatus("已清空 Google Sheets");
-      } catch (error) {
-        console.error(error);
-        setStatus("清空失敗，請稍後再試");
-      }
+      setStatus("正在清空共用記帳...");
+      await apiPost({ action: "clear" });
+      expenses = [];
+      render();
+      setStatus("已清空 Google Sheets");
     });
 
     render();
+    updateShareInputs();
     loadExpenses();
   </script>
 </body>
 </html>
-
-
